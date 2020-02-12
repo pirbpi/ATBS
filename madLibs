@@ -1,0 +1,25 @@
+from pathlib import Path
+import random, re, copy
+
+# TODO: Get a list of phrases and select a random one
+libTemplate = open('./madLibs/libTemplate.txt', 'r')
+libPhrases = list(libTemplate.readlines())
+selectedPhrase = random.choice(libPhrases)
+
+# TODO: Ask the user to replace the placeholders
+phraseRegex = re.compile(r'[A-Z]{2,}')
+replaceWords = phraseRegex.findall(selectedPhrase) # List of words to replace
+print(selectedPhrase)
+for i in range(len(replaceWords)):
+    adjectiveRegex = re.compile(f'{replaceWords[i]}')
+    userAdjective = input(f'Enter a {replaceWords[i].lower()}: \n')
+    selectedPhrase = adjectiveRegex.sub(userAdjective, selectedPhrase)
+
+
+print(selectedPhrase)
+
+# TODO: Create a text file with the updated phrase with user's entries
+libFinalPhrase = open('./madLibs/FinalMadLib.txt', 'w')
+libFinalPhrase.write(selectedPhrase)
+libTemplate.close()
+libFinalPhrase.close()
