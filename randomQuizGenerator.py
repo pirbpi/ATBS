@@ -26,8 +26,8 @@ capitals = {'Alabama': 'Montgomery', 'Alaska': 'Juneau', 'Arizona': 'Phoenix',
 # Generate 35 quiz files.
 for quizNum in range(35):
     # TODO: Create the quiz and answer key files.
-    quizFile = open(f'/home/rich/QuizStuff/capitalsquiz{quizNum + 1}.txt', 'w')
-    answerKeyFile = open(f'/home/rich/QuizStuff/capitalsquiz_answers{quizNum + 1}.txt','w')
+    quizFile = open(f'/Users/rbryan/PycharmProjects/ATBSChapter9/QuizStuff/capitalsquiz{quizNum + 1}.txt', 'w')
+    answerKeyFile = open(f'/Users/rbryan/PycharmProjects/ATBSChapter9/QuizStuff/capitalsquiz_answers{quizNum + 1}.txt','w')
     # TODO: write out the header for the quiz.
     quizFile.write('Name:\n\nDate:\n\nPeriod:\n\n')
     quizFile.write((' ' * 20) + f'State Capitals Quiz (Form{quizNum + 1})')
@@ -36,3 +36,23 @@ for quizNum in range(35):
     states = list(capitals.keys())
     random.shuffle(states)
     # TODO: Loop through all 50 states, making a question for each.
+    for questionNum in range(50):
+
+        # Get right and wrong answers.
+        correctAnswer = capitals[states[questionNum]]
+        wrongAnswers = list(capitals.values())
+        del wrongAnswers[wrongAnswers.index(correctAnswer)]
+        wrongAnswers = random.sample(wrongAnswers, 3)
+        answerOptions = wrongAnswers + [correctAnswer]
+        random.shuffle(answerOptions)
+
+        # TODO: Write the question and answer options to the quiz file
+        quizFile.write(f"{questionNum + 1}. What is the capital of {states[questionNum]}?\n")
+        for i in range(4):
+            quizFile.write(f"   {'ABCD'[i]}.{ answerOptions[i]}\n")
+        quizFile.write('\n')
+        #TODO: write the answer key to a file
+        answerKeyFile.write(f"{questionNum + 1}.{'ABCD'[answerOptions.index(correctAnswer)]}")
+        answerKeyFile.write('\n')
+    quizFile.close()
+    answerKeyFile.close()
