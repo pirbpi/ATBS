@@ -1,6 +1,9 @@
 #! python3
 # Image downloader - go to imgur.com and search for a category, then download all of the images
-
+'''
+Write a program that goes to a photo-sharing site like Flickr or Imgur, searches for a category of photos,
+and then downloads all the resulting images. You could write a program that works with any photo site that has a search feature.
+'''
 
 import requests, os, bs4
 
@@ -15,30 +18,22 @@ res = requests.get(url)
 res.raise_for_status()
 soup = bs4.BeautifulSoup(res.text, 'html.parser')
 
-postElem = soup.select('.post .image-list-link')
+postElem = soup.select('.image-list-link img')
+print(postElem)
 if postElem == []:
     print('Could not find post image')
 else:
-    imageURL = 'https://imgur.com' + postElem[0].get('href')
+    for i in range(len(postElem)):
+        imageURL = 'https:' + postElem[i].get('src')
 
-    # Visit the image page
-    print('Visiting image %s...' % (imageURL))
-    imageRes = requests.get(imageURL)
-    imageRes.raise_for_status()
-    soup = bs4.BeautifulSoup(imageRes.text, 'html.parser')
-    imageElem = soup.findAll('img')
-    print(imageElem)
-    for image_tag in imageElem:
-        print(image_tag.get('src'))
-    # imageURL = 'https:' + imageElem[0].get('src')
-
-
-
-# Save the image to ./imgur
-# imageFile = open(os.path.join('imgur', os.path.basename(imageURL)), 'wb')
-#for chunk in res.iter_content(100000):
-#    imageFile.write(chunk)
-#imageFile.close()
-
+        # Visit the image page
+        print('Downloading image %s...' % (imageURL))
+        res = requests.get(imageURL)
+        res.raise_for_status()
+        # Save the image to ./imgur
+        imageFile = open(os.path.join('imgur', os.path.basename(imageURL)), 'wb')
+        for chunk in res.iter_content(100000):
+            imageFile.write(chunk)
+        imageFile.close()
 
 print('Done')
