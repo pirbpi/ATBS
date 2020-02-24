@@ -7,12 +7,18 @@ blanksM = int(sys.argv[2])
 fileName = sys.argv[3]
 
 wb = openpyxl.load_workbook(fileName)
+nwb = openpyxl.Workbook()
+nwbSheet = wb.active
 sheet = wb.active
+cellValues = []
 
 for i in range(0, rowN-1):
     for cellObj in list(sheet.rows)[i]:
-        print(cellObj.coordinate)
+        nwbSheet[cellObj.coordinate] = cellObj.value
+        print(nwbSheet[cellObj.coordinate].value)
+        cellValues.append(cellObj.value)
 
+nwb.save('editedMultiplyTable.xlsx')
 
 '''
 for rowNum in range(1, rowN):
