@@ -1,27 +1,16 @@
 #! python3
+# From command line, choose row to insert # of blank rows and specify filename to modify.
 
 import sys, openpyxl
 
-rowN = int(sys.argv[1])
-blanksM = int(sys.argv[2])
-fileName = sys.argv[3]
+rowN = int(sys.argv[1]) # What row to insert Blank rows into
+blanksM = int(sys.argv[2]) # How many blank rows to enter
+fileName = sys.argv[3] # Filename to read & modify
 
-wb = openpyxl.load_workbook(fileName)
-nwb = openpyxl.Workbook()
-nwbSheet = wb.active
+wb = openpyxl.load_workbook(fileName) # Open the spreadsheet
 sheet = wb.active
-cellValues = []
 
-for i in range(0, rowN-1):
-    for cellObj in list(sheet.rows)[i]:
-        nwbSheet[cellObj.coordinate] = cellObj.value
-        print(nwbSheet[cellObj.coordinate].value)
-        cellValues.append(cellObj.value)
-
-nwb.save('editedMultiplyTable.xlsx')
-
-'''
-for rowNum in range(1, rowN):
-    for col in range(1, sheet.max_column):
-        print(sheet.cell(row=rowNum,column=col).coordinate)
-'''
+for row in range(rowN, rowN+blanksM):
+    sheet.insert_rows(row)
+    
+wb.save('editedMultiplyTable.xlsx') # Save the workbook into a new file.
